@@ -7,25 +7,23 @@ from tkinter import Button, Tk, Frame, font, filedialog, PhotoImage, Label, Scal
 from tkinter.scrolledtext import ScrolledText
 
    
-def abrirArchivo():
-   Archivos = filedialog.askopenfilename(title= 'abrir', initialdir='C:/', filetypes=(('Archivos pdf', '*.pdf'),('todos los archivos', '*.*')))
-   if Archivos != ' ':
-        path = open(Archivos,'rb')
-        content = path.read()
-        pdfReader = PyPDF2.PdfFileReader(path)
-        vent.title(Archivos)
-        
-     
+def abrirArchivo(self):
+ archivos = filedialog.askopenfilename(title= 'abrir', initialdir='C:/', filetypes=(('Archivos pdf', '*.pdf'),('todos los archivos', '*.*')))
+ if archivos:
+        with open(archivos, 'rb') as path:
+                pdfReader = PyPDF2.PdfFileReader(path)
+                vent.title(archivos)
        
 def reproducir():
-        text = pdfReader.getPage(pages).extractText()
+        
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[1].id)
-              
+        with open(archivos,'rb') as path:
+            pdfReader = PyPDF2.PdfFileReader(path)
         for pages in range(pdfReader.numPages):
-                engine.say(text)
-                engine.runAndWait()
-                
+            text = pdfReader.getPage(pages).extractText()
+            engine.say(text)
+            engine.runAndWait()
               
        
 
